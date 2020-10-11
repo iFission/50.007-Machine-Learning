@@ -2,7 +2,7 @@
 # 1003474
 
 # 3a
-# theta = def ridge_regression(X, Y, l):...
+# theta = [-0.57939825  1.15033028  0.04934122 -1.59867896]
 
 # 3b
 # regularisation = 0.012589254117941352

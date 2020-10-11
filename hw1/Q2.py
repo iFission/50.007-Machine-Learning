@@ -11,12 +11,14 @@
 # error = 11.18724893007848
 
 # stochastic
-# theta = [0.00195595, 0.00139545]
-# error = 13.768796624516277
+# theta = [0.00156322, 0.00122478]
+# error = 13.771874611911194
 
 # 2c
 # error = 0.570084436469135
-# on order 15
+# on order 14:
+# 14 0.5497941299008209
+# 15 0.5513486786377605
 
 #%%
 #%%
@@ -107,8 +109,6 @@ theta = get_theta_closed_form(train_X_with_offset.values, train_Y.values)
 print(theta)
 plot_scatter_label_and_line(train_X, train_Y, theta, "X", "Y")
 
-
-
 training_error = calculate_least_squared_error(train_X_with_offset.values,
                                                train_Y.values, theta)
 print(training_error)
@@ -130,7 +130,7 @@ print(training_error)
 
 #%%
 import random
-random.seed(9)
+random.seed(6)
 
 
 def stochastic_gradient_descent(X, y, theta, alpha, iters):
@@ -138,11 +138,14 @@ def stochastic_gradient_descent(X, y, theta, alpha, iters):
     y = np.mat(y)
     theta = np.mat(theta).T
     for _ in range(iters):
+
+        # choose a random sample
+        t = random.randrange(X.shape[0])
+
         # error = (X * theta) - y
         # gradient = X.T * error # transpose X features, to solve for matrix vector product, X is 100 * n, error is 100*1
         # increment = alpha / X.shape[0] * gradient
         # theta = theta-increment
-        t = random.randrange(X.shape[0])
         theta = theta + alpha / X.shape[0] * (X[t].T * (y[t] - (X[t] * theta)))
     return np.array(theta.T)[0]
 
@@ -179,6 +182,10 @@ training_error = calculate_least_squared_error(
 print(training_error)
 
 #%%
+
+degree_ls = []
+training_error_ls = []
+
 for degree in range(3, 15 + 1):
     train_X_with_offset_degree_n = create_poly_features(
         train_X_with_offset.copy(deep=True), degree)
@@ -189,3 +196,8 @@ for degree in range(3, 15 + 1):
     training_error = calculate_least_squared_error(
         train_X_with_offset_degree_n.values, train_Y.values, theta)
     print(degree, training_error)
+
+    degree_ls.append(degree)
+    training_error_ls.append(training_error)
+# %%
+plt.plot(degree_ls, training_error_ls)
