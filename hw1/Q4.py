@@ -1,6 +1,28 @@
 # Alex W
 # 1003474
 
+# iteration: 0
+# error: 14442779.263655432
+# centroids_new: [[226 208 194]
+#  [203 135  77]
+#  [127  64  21]
+#  [  0 255   0]
+#  [ 92  94  89]
+#  [  0   0 255]
+#  [ 56  56  79]
+#  [ 29  23  22]]
+
+# iteration: 1
+# error: 5773298.852908576
+# centroids_new: [[235 231 225]
+#  [189 125  74]
+#  [129  61  14]
+#  [  0 255   0]
+#  [114 102  92]
+#  [  0   0 255]
+#  [ 55  49  57]
+#  [ 34  24  20]]
+
 #%%
 import pandas as pd
 import numpy as np
@@ -41,7 +63,7 @@ def get_closest_centroid_index(sample, centroids):
             distance_closest = distance_current
             centroid_closest = centroid_index
 
-    return centroid_closest
+    return centroid_closest, distance_closest
 
 
 #%%
@@ -60,14 +82,18 @@ from tqdm import tqdm
 
 iteration = -1
 while True:
-    iteration += 1
-    print(f'iteration: {iteration}')
+
+    error = 0
 
     # assign points by find best clusters given centroids
     for pixel_index, pixel in tqdm(enumerate(data), total=data.shape[0]):
-        centroid_closest = get_closest_centroid_index(pixel, centroids)
+        centroid_closest, distance_closest = get_closest_centroid_index(
+            pixel, centroids)
 
         cluster_assigned_new[pixel_index] = centroid_closest
+
+        # add the distance to error
+        error += distance_closest
 
     # reassign centroids by find best centroids given clusters
     for centroid_index, centroid in tqdm(enumerate(centroids),
@@ -82,6 +108,11 @@ while True:
             # only reassign when contains points
 
             centroids_new[centroid_index] = np.mean(samples, axis=0)
+
+    iteration += 1
+    print(f'\niteration: {iteration}')
+    print(f'error: {error}')
+    print(f'centroids_new: {centroids_new}')
 
     if np.array_equal(centroids, centroids_new) and np.array_equal(
             cluster_assigned, cluster_assigned_new):
