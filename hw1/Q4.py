@@ -121,6 +121,10 @@ while True:
     centroids = centroids_new
     cluster_assigned = cluster_assigned_new
 
+#%%
+centroids = np.array([[239, 236, 230], [185, 121, 70], [138, 63, 12],
+                      [0, 255, 0], [119, 101, 88], [0, 0, 255], [78, 36, 12],
+                      [25, 23, 23]])
 # reconstruct data image
 data_new = np.array([
     centroids[int(sample_centroid_closest)]

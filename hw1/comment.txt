@@ -1,0 +1,14 @@
+Q1
+Some code can be cleaned. t=0, t+=1 and epoch not needed, % train_X not needed. 4th epoch results wrong [-0]
+
+Q2
+SGD 5 epochs means 5 * training data size iterations [-2]
+Report and plot quadratic, not cubic fit [-2]
+Good job on using pinv instead of inv, as it's more stable [+0]
+
+Q3
+
+
+Q4
+Algorithm shouldn't terminate after 2 iterations and final results is off, although i can't figure out what's wrong [-5]
+--> 
